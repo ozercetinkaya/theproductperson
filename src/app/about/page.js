@@ -37,8 +37,8 @@ const AboutPage = () => {
    <div className="grid grid-cols-1 md:grid-cols-[1.2fr_1.8fr] gap-20 items-start">
 
   {/* Sol sabit içerik – mobilde de görünür */}
-  <div className="flex md:sticky md:top-10 min-h-screen flex-col gap-12 px-6 md:px-8 pt-2 pb-4 bg-[#F8F5F2] text-[#332E2E]">
-{/* Üst Bilgi */}
+  <div className="flex md:sticky md:top-10 md:min-h-screen flex-col gap-12 px-6 md:px-8 pt-2 pb-4 bg-[#F8F5F2] text-[#332E2E]">
+  {/* Üst Bilgi */}
 <div>
   <h1 className="text-5xl font-extrabold leading-tight mb-2">Özer Çetinkaya</h1>
   <h2 className="text-xl text-[#555] mb-8">Product Owner</h2>

@@ -24,3 +24,9 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+@media (max-width: 1211px) {
+  .hide-under-1212 {
+    display: none !important;
+  }
+}
