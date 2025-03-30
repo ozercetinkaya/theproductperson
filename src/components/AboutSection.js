@@ -7,7 +7,8 @@ const AboutSection = () => {
       <div className="flex flex-col md:flex-row items-center justify-between gap-x-12">
       
         {/* Illustration */}
-        <div className="w-full md:w-1/2 mb-8 md:mb-0 flex justify-center -translate-x-12">
+        <div className="w-full md:w-1/2 mb-8 md:mb-0 flex justify-center translate-x-6 sm:translate-x-0">
+
           <Image
             src="/illustration-main-page.svg" // kendi görseline göre güncelle
             alt="Illustration"

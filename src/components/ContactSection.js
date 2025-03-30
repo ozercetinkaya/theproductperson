@@ -20,9 +20,7 @@ const ContactSection = () => {
     const res = await fetch("https://formspree.io/f/mkgjvryd", {
       method: "POST",
       body: formData,
-      headers: {
-        Accept: "application/json",
-      },
+      headers: { Accept: "application/json" },
     });
 
     if (res.ok) {
@@ -35,10 +33,10 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="bg-[#0095AF] text-[#332E2E] py-20 px-6 md:px-20">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        
         {/* Sol: Form */}
-        <div className="w-full max-w-lg">
+        <div className="w-full max-w-lg pl-6 md:pl-16">
           <h2 className="text-4xl font-bold mb-6 text-white">Get in Touch</h2>
           <p className="text-lg mb-8 text-white">
             Want to collaborate or just say hello? Feel free to reach out!
@@ -90,43 +88,34 @@ const ContactSection = () => {
           )}
         </div>
 
-        {/* Sağ: Logo ve Sosyal */}
-<div className="w-[480px] h-[460px] bg-[#f8f5f2] rounded-3xl shadow-xl p-8 pt-6 flex flex-col items-center text-center ml-auto mr-16 mt-6 justify-between">
-  {/* Logo */}
-  <div className="w-[240px] h-[240px] relative -mt-12 mb-2">
-    <Image src="/tpplogo2.svg" alt="Logo" fill className="object-contain" />
-  </div>
+        {/* Sağ: Logo & Info (mobilde daha kompakt) */}
+      <div className="w-full md:max-w-md bg-[#f8f5f2] rounded-3xl shadow-xl p-6 flex flex-col items-center text-center mx-auto md:ml-24">
+        <div className="w-[200px] h-[200px] sm:w-[220px] sm:h-[220px] relative mb-4">
+            <Image src="/tpplogo2.svg" alt="Logo" fill className="object-contain" />
+          </div>
 
-  {/* Başlık ve Telif */}
-  <div className="flex flex-col items-center -mt-16">
-    <h3 className="text-3xl font-extrabold text-[#332E2E] mb-1">
-      TheProductPerson
-    </h3>
-    <p className="text-base font-semibold text-[#333] mb-3 tracking-wide">
-      DIGITAL PRODUCT MANAGEMENT
-    </p>
-    <p className="text-sm text-gray-500 mb-4">
-      © {new Date().getFullYear()} - All rights reserved.
-    </p>
-  </div>
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-[#332E2E]">
+            TheProductPerson
+          </h3>
+          <p className="text-sm sm:text-base font-semibold text-[#333] mb-2 tracking-wide">
+            DIGITAL PRODUCT MANAGEMENT
+          </p>
+          <p className="text-xs text-gray-500 mb-4">
+            © {new Date().getFullYear()} - All rights reserved.
+          </p>
 
-  {/* Sosyal İkonlar */}
-  <div className="flex justify-center gap-8 text-3xl">
-    <a href="https://www.instagram.com/ozercetinkaya/" target="_blank" rel="noopener noreferrer" className="text-[#E1306C] hover:text-pink-700 transition">
-      <i className="fab fa-instagram"></i>
-    </a>
-    <a href="https://www.linkedin.com/in/ozercetinkaya/" target="_blank" rel="noopener noreferrer" className="text-[#0A66C2] hover:text-blue-900 transition">
-      <i className="fab fa-linkedin"></i>
-    </a>
-    <a href="mailto:ozercetinka@gmail.com" className="text-[#F87666] hover:text-[#e25a4f] transition-colors duration-300">
-      <i className="fas fa-envelope"></i>
-    </a>
-  </div>
-</div>
-
-
-
-
+          <div className="flex justify-center gap-6 text-2xl sm:text-3xl">
+            <a href="https://www.instagram.com/ozercetinkaya/" target="_blank" className="text-[#E1306C] hover:text-pink-700 transition">
+              <i className="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/ozercetinkaya/" target="_blank" className="text-[#0A66C2] hover:text-blue-900 transition">
+              <i className="fab fa-linkedin"></i>
+            </a>
+            <a href="mailto:ozercetinka@gmail.com" className="text-[#F87666] hover:text-[#e25a4f] transition">
+              <i className="fas fa-envelope"></i>
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   );
