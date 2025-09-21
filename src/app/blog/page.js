@@ -20,7 +20,6 @@ export default function BlogPage() {
       })
       .then((json) => {
         if (!mounted) return;
-        console.log(json);
         setBlogs(json.data);
       })
       .catch((err) => {
