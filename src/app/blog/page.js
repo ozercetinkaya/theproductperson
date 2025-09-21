@@ -1,5 +1,4 @@
 import BlogCard from "./components/BlogCard";
-export const runtime = "edge";
 
 const STRAPI_URL =
   process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
