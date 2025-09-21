@@ -16,8 +16,8 @@ import React from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
 
-export default async function BlogDetail({ searchParams }) {
-  const slug = searchParams?.name;
+export default async function BlogDetail() {
+  const slug = "1";
   const STRAPI_URL =
     process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
   const CT = "articles";
