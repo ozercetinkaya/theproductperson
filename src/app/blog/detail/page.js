@@ -1,8 +1,8 @@
-"use client";
 // app/blog/[slug]/page.jsx
-import React, { useState, useEffect } from "react";
+export const runtime = "edge";
+import React from "react";
 import Image from "next/image";
-// import { getMediaUrl } from "@/utils";
+import { getMediaUrl } from "@/utils";
 import url from "../../../../constants";
 
 const STRAPI_URL = url || "http://localhost:1337";
@@ -17,7 +17,9 @@ function normalize(row) {
   const coverV4 = row.attributes?.cover?.data?.attributes;
   const cover = coverV5 || coverV4 || null;
 
-  const coverSrc = "https://placehold.co/1280x720?text=No%20Image";
+  const coverSrc = cover
+    ? getMediaUrl(cover.formats?.large?.url || cover.url)
+    : "https://placehold.co/1280x720?text=No%20Image";
 
   return { title, body, cover, coverSrc };
 }
@@ -48,51 +50,9 @@ async function fetchOne(param) {
   return null;
 }
 
-export default function BlogDetail({ searchParams }) {
-  const slug = searchParams?.name;
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const fetchedData = await fetchOne(slug);
-        setData(fetchedData);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [slug]);
-
-  if (loading) {
-    return (
-      <main className="bg-white">
-        <section className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="mt-6 h-24 flex items-center justify-center">
-            Yükleniyor...
-          </div>
-        </section>
-      </main>
-    );
-  }
-
-  if (error) {
-    return (
-      <main className="bg-white">
-        <section className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="mt-6 h-24 flex items-center justify-center">
-            Bir hata oluştu: {error.message}
-          </div>
-        </section>
-      </main>
-    );
-  }
+export default async function BlogDetail({ params }) {
+  const slug = params?.slug;
+  const data = await fetchOne(slug);
 
   if (!data) {
     // Veri bulunamazsa 404 sayfasına yönlendir
