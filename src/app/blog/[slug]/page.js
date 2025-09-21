@@ -13,8 +13,7 @@ export default BlogDetail;
 
 // app/blog/[slug]/page.jsx
 export const runtime = "edge";
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import React from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
 
