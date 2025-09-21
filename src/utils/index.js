@@ -6,6 +6,6 @@ export const getMediaUrl = (url) => {
   if (url.startsWith("//")) return `http:${url}`;
   if (url.startsWith("localhost:")) return `http://${url}`;
   return isProduction
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL_LIVE}${url}`
+    ? `${"theproductpersonbackend-production.up.railway.app"}${url}`
     : `${process.env.NEXT_PUBLIC_STRAPI_URL_LOCAL}${url}`;
 };

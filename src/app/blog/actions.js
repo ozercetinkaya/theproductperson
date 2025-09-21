@@ -1,7 +1,8 @@
 "use server";
 
 const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL_LIVE || "http://localhost:1337";
+  "theproductpersonbackend-production.up.railway.app" ||
+  "http://localhost:1337";
 const CT = "/articles";
 
 export async function fetchBlogs() {
