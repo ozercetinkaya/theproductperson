@@ -1,24 +1,11 @@
-/*const BlogDetail = async ({ params }) => {
-  const slug = (await params?.slug) || false;
-  if (!/^\d+$/.test(slug)) return <p>İstenilen blog bulunamadı</p>; // sadece rakam
-  const id = Number(slug);
-  return <p>{id}</p>;
-};
-export default BlogDetail;
-
- TODO
-    1- Sayfanın tasarımı yapılacak.
-    2- Strapi'ye detay için istek atılacak.
-*/
-
 // app/blog/[slug]/page.jsx
 export const runtime = "edge";
 import React from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
+import url from "../../../../constants";
 
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
+const STRAPI_URL = url || "http://localhost:1337";
 const CT = "articles";
 
 function normalize(row) {
