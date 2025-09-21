@@ -1,11 +1,8 @@
 import BlogCard from "./components/BlogCard";
-import url from "../../../constants";
+import { fetchBlogs } from "./actions";
 
 export default async function BlogPage() {
-  const page = "/articles";
-  const res = await fetch(url + page + "?populate=cover");
-  const json = await res.json();
-  const blogs = json.data;
+  const blogs = await fetchBlogs();
 
   /* TODOS:
     1.Buraya kart tasarımı yapılacak.

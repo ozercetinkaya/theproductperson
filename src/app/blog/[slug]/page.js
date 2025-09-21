@@ -3,52 +3,7 @@ export const runtime = "edge";
 import React from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
-import url from "../../../../constants";
-
-const STRAPI_URL = url || "http://localhost:1337";
-const CT = "articles";
-
-function normalize(row) {
-  const rec = row.attributes ?? row; // v4/v5 normalize
-  const title = rec.title ?? "Untitled";
-  const body = rec.content ?? rec.description ?? "";
-
-  const coverV5 = rec.cover;
-  const coverV4 = row.attributes?.cover?.data?.attributes;
-  const cover = coverV5 || coverV4 || null;
-
-  const coverSrc = cover
-    ? getMediaUrl(cover.formats?.large?.url || cover.url)
-    : "https://placehold.co/1280x720?text=No%20Image";
-
-  return { title, body, cover, coverSrc };
-}
-
-async function fetchOne(param) {
-  const base = `${STRAPI_URL}/${CT}`;
-  // önce slug
-  const urlStr = `${base}?filters[slug][$eq]=${encodeURIComponent(
-    param
-  )}&populate=cover`;
-  console.log(urlStr);
-  const res = await fetch(urlStr);
-  if (!res.ok) throw new Error(`Fetch failed ${res.status}`);
-  const json = await res.json();
-  const row = json.data?.[0];
-  console.log(row);
-  if (row) return normalize(row);
-
-  // yoksa id
-  if (/^\d+$/.test(param)) {
-    const urlId = `${base}/${param}?populate=cover`;
-    const res2 = await fetch(urlId);
-    if (!res2.ok) throw new Error(`Fetch failed ${res2.status}`);
-    const json2 = await res2.json();
-    const row2 = json2.data;
-    if (row2) return normalize(row2);
-  }
-  return null;
-}
+import { fetchOne } from "./actions";
 
 export default async function BlogDetail({ params }) {
   const slug = params?.slug;
