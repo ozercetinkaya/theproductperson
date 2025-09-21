@@ -37,7 +37,7 @@ export default async function BlogDetail() {
     return { title, body, cover, coverSrc };
   }
 
-  async function fetchOne(param) {
+  async function fetchOne() {
     const slug = new URLSearchParams(param).get("name");
     const base = `${STRAPI_URL}/${CT}`;
     // önce slug
@@ -63,7 +63,7 @@ export default async function BlogDetail() {
     }
     return null;
   }
-  const data = await fetchOne(slug);
+  const data = await fetchOne();
   if (!data) {
     // Veri bulunamazsa 404 sayfasına yönlendir
     // Next.js sunucu bileşenlerinde redirect kullanırken Next.js'in 'next/navigation' modülünden 'notFound' kullanılması tavsiye edilir.
