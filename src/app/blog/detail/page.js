@@ -8,7 +8,7 @@ export default async function BlogDetail({ params }) {
     process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
     "https://theproductpersonbackend-production.up.railway.app" ||
     "http://localhost:1337";
-  const CT = "/api/articles";
+  const CT = "/articles";
   const res = await fetch(
     STRAPI_URL + CT + "?filters[slug][$eq]=1" + "&populate=cover"
   );
