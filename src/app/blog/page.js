@@ -1,3 +1,4 @@
+export const runtime = "edge";
 import BlogCard from "./components/BlogCard";
 import { fetchBlogs } from "./actions";
 
