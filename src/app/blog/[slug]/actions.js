@@ -1,7 +1,8 @@
 export const runtime = "edge";
 
 const STRAPI_URL =
-  "theproductpersonbackend-production.up.railway.app" ||
+  process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
+  "https://theproductpersonbackend-production.up.railway.app" ||
   "http://localhost:1337";
 const CT = "articles";
 

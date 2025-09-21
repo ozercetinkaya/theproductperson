@@ -2,7 +2,7 @@
 export const runtime = "edge";
 import React from "react";
 import Image from "next/image";
-import { getMediaUrl } from "@/utils";
+// import { getMediaUrl } from "@/utils";
 import { fetchOne } from "./actions";
 
 export default async function BlogDetail({ params }) {
