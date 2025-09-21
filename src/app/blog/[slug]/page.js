@@ -77,20 +77,20 @@ export default function BlogDetailClient() {
     let mounted = true;
     if (!slug) return;
     setLoading(true);
-    // fetchOne(slug)
-    //   .then((res) => {
-    //     if (!mounted) return;
-    //     if (!res) {
-    //       router.replace("/404");
-    //       return;
-    //     }
-    //     setData(res);
-    //   })
-    //   .catch((err) => {
-    //     console.error(err);
-    //     setError(err);
-    //   })
-    //   .finally(() => mounted && setLoading(false));
+    fetchOne(slug)
+      .then((res) => {
+        if (!mounted) return;
+        if (!res) {
+          router.replace("/404");
+          return;
+        }
+        setData(res);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err);
+      })
+      .finally(() => mounted && setLoading(false));
     return () => {
       mounted = false;
     };
