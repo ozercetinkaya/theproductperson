@@ -20,8 +20,18 @@ const nextConfig = {
         hostname: "placeon.site",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "theproductpersonbackend-production.up.railway.app",
+        pathname: "/api/uploads/**",
+      },
     ],
-    domains: ["localhost", "placehold.co", "placeon.site"], // opsiyonel
+    domains: [
+      "localhost",
+      "placehold.co",
+      "placeon.site",
+      "theproductpersonbackend-production.up.railway.app",
+    ], // opsiyonel
   },
 };
 
