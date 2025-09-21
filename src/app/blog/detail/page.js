@@ -2,7 +2,7 @@
 import React from "react";
 
 export default async function BlogDetail({ params, searchParams }) {
-  const slug = searchParams?.name || params?.name;
+  const slug = params?.name;
 
   const STRAPI_URL =
     process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
