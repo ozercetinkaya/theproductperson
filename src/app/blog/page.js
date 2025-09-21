@@ -1,6 +1,6 @@
-export const runtime = "edge";
 import BlogCard from "./components/BlogCard";
 import { fetchBlogs } from "./actions";
+export const runtime = "edge";
 
 export default async function BlogPage() {
   const blogs = await fetchBlogs();
