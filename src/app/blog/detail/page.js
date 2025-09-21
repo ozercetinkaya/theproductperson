@@ -12,7 +12,6 @@ export default BlogDetail;
 */
 
 // app/blog/[slug]/page.jsx
-export const runtime = "edge";
 import React from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
