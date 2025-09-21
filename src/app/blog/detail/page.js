@@ -9,9 +9,8 @@ export default async function BlogDetail({ params, searchParams }) {
     "https://theproductpersonbackend-production.up.railway.app" ||
     "http://localhost:1337";
   const CT = "/articles";
-  const querySlug = encodeURIComponent(slug || "");
   const res = await fetch(
-    STRAPI_URL + CT + `?filters[slug][$eq]=${querySlug}` + "&populate=cover"
+    STRAPI_URL + CT + `?filters[slug][$eq]=${slug}` + "&populate=cover"
   );
   if (!res.ok) {
     console.error("Fetch failed for blogs:", res.status, res.statusText);
