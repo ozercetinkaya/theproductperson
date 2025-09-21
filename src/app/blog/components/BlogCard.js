@@ -62,7 +62,8 @@ export default function BlogCard({ item }) {
         {item?.cover?.url ? (
           <Image
             alt="mainimage"
-            src={getMediaUrl(item.cover.url)}
+            // src={getMediaUrl(item.cover.url)}
+            src="https://placeon.site/600/400/png/6b7280?text=600x400&font=opensans&fontSize=24"
             width={200}
             height={120}
             className="w-full h-auto"
