@@ -1,13 +1,36 @@
+"use client";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import BlogCard from "./components/BlogCard";
 import url from "../../../constants";
 
-export default async function BlogPage() {
-  const page = "/articles";
-  const res = await fetch(url + page + "?populate=cover");
-  const json = await res.json();
-  const blogs = json.data;
+export default function BlogPage() {
+  const [blogs, setBlogs] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const page = "/articles";
+    fetch(url + page + "?populate=cover")
+      .then((res) => {
+        if (!res.ok) throw new Error(`Fetch failed ${res.status}`);
+        return res.json();
+      })
+      .then((json) => {
+        if (!mounted) return;
+        setBlogs(json.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        setError(err);
+      })
+      .finally(() => mounted && setLoading(false));
+    return () => {
+      mounted = false;
+    };
+  }, []);
   /* TODOS:
     1.Buraya kart tasarımı yapılacak.
     2. Server'dan gelen arrayı kart ile döndür.
@@ -15,6 +38,20 @@ export default async function BlogPage() {
         return <BlogCard title={e.title} description={e.description} />  
       })
   */
+  if (loading)
+    return (
+      <section className="min-h-[80vh] bg-[#F8F5F2] py-12 px-16">
+        <div className="text-center mt-4">Yükleniyor…</div>
+      </section>
+    );
+
+  if (error)
+    return (
+      <section className="min-h-[80vh] bg-[#F8F5F2] py-12 px-16">
+        <div className="text-center mt-4 text-red-600">Bir hata oluştu.</div>
+      </section>
+    );
+
   return (
     <section className="min-h-[80vh] bg-[#F8F5F2] py-12 px-16">
       {blogs && blogs.length > 0 ? (
