@@ -12,11 +12,13 @@ export default BlogDetail;
 */
 
 // app/blog/[slug]/page.jsx
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
 
-export default async function BlogDetail() {
+export default function BlogDetailClient() {
   const STRAPI_URL =
     process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
   const CT = "articles";
@@ -37,22 +39,20 @@ export default async function BlogDetail() {
     return { title, body, cover, coverSrc };
   }
 
-  async function fetchOne() {
-    const slug = new URLSearchParams(param).get("name");
+  async function fetchBySlugOrId(param) {
     const base = `${STRAPI_URL}/${CT}`;
-    // önce slug
+
+    // önce slug ile dene
     const urlStr = `${base}?filters[slug][$eq]=${encodeURIComponent(
-      slug
+      param
     )}&populate=cover`;
-    console.log(urlStr);
     const res = await fetch(urlStr);
     if (!res.ok) throw new Error(`Fetch failed ${res.status}`);
     const json = await res.json();
     const row = json.data?.[0];
-    console.log(row);
     if (row) return normalize(row);
 
-    // yoksa id
+    // yoksa id ile dene
     if (/^\d+$/.test(param)) {
       const urlId = `${base}/${param}?populate=cover`;
       const res2 = await fetch(urlId);
@@ -63,22 +63,73 @@ export default async function BlogDetail() {
     }
     return null;
   }
-  const data = await fetchOne();
-  if (!data) {
-    // Veri bulunamazsa 404 sayfasına yönlendir
-    // Next.js sunucu bileşenlerinde redirect kullanırken Next.js'in 'next/navigation' modülünden 'notFound' kullanılması tavsiye edilir.
-    // Ancak direkt bir redirect için 'next/navigation'dan 'redirect' de kullanılabilir.
-    // Şimdilik null döndürüp Next.js'in 404'ü işlemesini sağlayabiliriz veya özel bir 404 component'i gösterebiliriz.
+
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const param = (() => {
+      try {
+        const u = new URL(window.location.href);
+        // varsayılan: path'ten son segment veya query param 'slug' veya 'name'
+        const pathParts = u.pathname.split("/").filter(Boolean);
+        const lastSeg = pathParts[pathParts.length - 1] ?? "";
+        const qSlug = u.searchParams.get("slug") || u.searchParams.get("name");
+        return qSlug || lastSeg || "";
+      } catch (err) {
+        return "";
+      }
+    })();
+
+    if (!param) {
+      setError("Geçersiz slug veya id");
+      setLoading(false);
+      return;
+    }
+
+    fetchBySlugOrId(param)
+      .then((d) => {
+        if (!mounted) return;
+        if (!d) setError("İstenilen blog bulunamadı.");
+        setData(d);
+      })
+      .catch((err) => {
+        if (!mounted) return;
+        setError(err.message || "İstek sırasında hata oluştu");
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setLoading(false);
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  if (loading)
     return (
       <main className="bg-white">
         <section className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="mt-6 h-24 flex items-center justify-center">
-            İstenilen blog bulunamadı.
+            Yükleniyor...
           </div>
         </section>
       </main>
     );
-  }
+
+  if (error)
+    return (
+      <main className="bg-white">
+        <section className="mx-auto max-w-3xl px-4 sm:px-6">
+          <div className="mt-6 h-24 flex items-center justify-center">
+            {error}
+          </div>
+        </section>
+      </main>
+    );
 
   const looksHtml = /<\/?[a-z][\s\S]*>/i.test(data.body || "");
   const paragraphs = !looksHtml
