@@ -1,5 +1,6 @@
+"use client";
 // app/blog/[slug]/page.jsx
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
 import url from "../../../../constants";
@@ -49,9 +50,51 @@ async function fetchOne(param) {
   return null;
 }
 
-export default async function BlogDetail({ searchParams }) {
+export default function BlogDetail({ searchParams }) {
   const slug = searchParams?.name;
-  const data = await fetchOne(slug);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const fetchedData = await fetchOne(slug);
+        setData(fetchedData);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <main className="bg-white">
+        <section className="mx-auto max-w-3xl px-4 sm:px-6">
+          <div className="mt-6 h-24 flex items-center justify-center">
+            Yükleniyor...
+          </div>
+        </section>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="bg-white">
+        <section className="mx-auto max-w-3xl px-4 sm:px-6">
+          <div className="mt-6 h-24 flex items-center justify-center">
+            Bir hata oluştu: {error.message}
+          </div>
+        </section>
+      </main>
+    );
+  }
 
   if (!data) {
     // Veri bulunamazsa 404 sayfasına yönlendir
