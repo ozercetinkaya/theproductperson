@@ -12,14 +12,14 @@ export default BlogDetail;
 */
 
 // app/blog/[slug]/page.jsx
-"use client";
+export const runtime = "edge";
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
-import url from "../../../../constants";
 
-const STRAPI_URL = url;
+const STRAPI_URL =
+  process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
 const CT = "articles";
 
 function normalize(row) {
@@ -64,58 +64,25 @@ async function fetchOne(param) {
   return null;
 }
 
-export default function BlogDetailClient() {
-  const params = useParams();
-  const router = useRouter();
+export default async function BlogDetail({ params }) {
   const slug = params?.slug;
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const data = await fetchOne(slug);
 
-  useEffect(() => {
-    let mounted = true;
-    if (!slug) return;
-    setLoading(true);
-    fetchOne(slug)
-      .then((res) => {
-        if (!mounted) return;
-        if (!res) {
-          router.replace("/404");
-          return;
-        }
-        setData(res);
-      })
-      .catch((err) => {
-        console.error(err);
-        setError(err);
-      })
-      .finally(() => mounted && setLoading(false));
-    return () => {
-      mounted = false;
-    };
-  }, [slug, router]);
-
-  if (loading)
+  if (!data) {
+    // Veri bulunamazsa 404 sayfasına yönlendir
+    // Next.js sunucu bileşenlerinde redirect kullanırken Next.js'in 'next/navigation' modülünden 'notFound' kullanılması tavsiye edilir.
+    // Ancak direkt bir redirect için 'next/navigation'dan 'redirect' de kullanılabilir.
+    // Şimdilik null döndürüp Next.js'in 404'ü işlemesini sağlayabiliriz veya özel bir 404 component'i gösterebiliriz.
     return (
       <main className="bg-white">
         <section className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="mt-6 h-24 flex items-center justify-center">
-            Yükleniyor…
+            İstenilen blog bulunamadı.
           </div>
         </section>
       </main>
     );
-
-  if (error)
-    return (
-      <main className="bg-white">
-        <section className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="mt-6 text-red-600">Bir hata oluştu.</div>
-        </section>
-      </main>
-    );
-
-  if (!data) return null;
+  }
 
   const looksHtml = /<\/?[a-z][\s\S]*>/i.test(data.body || "");
   const paragraphs = !looksHtml
