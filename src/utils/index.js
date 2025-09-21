@@ -6,6 +6,6 @@ export default function getMediaUrl(url) {
   if (url.startsWith("//")) return `http:${url}`;
   if (url.startsWith("localhost:")) return `http://${url}`;
   return isProduction
-    ? `${process.env.NEXT_PUBLIC_STRAPI_URL_LIVE}${url}`
+    ? `${process.env.NEXT_PUBLIC_STRAPI_API_URL}${url}`
     : `${process.env.NEXT_PUBLIC_STRAPI_URL_LOCAL}${url}`;
 }
