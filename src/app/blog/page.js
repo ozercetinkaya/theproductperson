@@ -1,19 +1,40 @@
+"use client";
 import BlogCard from "./components/BlogCard";
 
+import { useEffect, useState } from "react";
 const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
+  process.env.NEXT_PUBLIC_STRAPI_API_URL ||
   "https://theproductpersonbackend-production.up.railway.app/api" ||
   "http://localhost:1337";
 const CT = "/articles";
 
-export default async function BlogPage() {
-  console.log(STRAPI_URL + CT + "?populate=cover");
-  const res = await fetch(STRAPI_URL + CT + "?populate=cover");
-  if (!res.ok) {
-    console.error("Fetch failed for blogs:", res.status, res.statusText);
-  }
-  const json = await res.json();
-  const blogs = json?.data || [];
+export default function BlogPage() {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchBlogs = async () => {
+      try {
+        const res = await fetch(STRAPI_URL + CT + "?populate=cover");
+        if (!res.ok) {
+          throw new Error(`${res.status} ${res.statusText}`);
+        }
+        const json = await res.json();
+        if (mounted) setBlogs(json?.data || []);
+      } catch (err) {
+        console.error("Fetch failed for blogs:", err);
+        if (mounted) setError(err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchBlogs();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   /* TODOS:
     1.Buraya kart tasarımı yapılacak.
@@ -35,7 +56,9 @@ export default async function BlogPage() {
           </p>
         </header>
 
-        {blogs && blogs.length > 0 ? (
+        {loading ? (
+          <div className="py-12 text-center">Yükleniyor...</div>
+        ) : blogs && blogs.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {blogs.map((item, i) => (
               <BlogCard item={item} key={"blog" + i} />
@@ -53,10 +76,16 @@ export default async function BlogPage() {
             <h2 className="text-2xl font-semibold text-[#332E2E]">
               Henüz içerik yok
             </h2>
-            <p className="mt-2 text-[#555]">
-              İçerikler hazırlanıyor — yakında paylaşılıyor. Lütfen daha sonra
-              tekrar kontrol edin.
-            </p>
+            {error ? (
+              <p className="mt-2 text-[#555]">
+                İçerikler alınamadı. Lütfen daha sonra tekrar deneyin.
+              </p>
+            ) : (
+              <p className="mt-2 text-[#555]">
+                İçerikler hazırlanıyor — yakında paylaşılıyor. Lütfen daha sonra
+                tekrar kontrol edin.
+              </p>
+            )}
             <a
               href="/"
               className="mt-6 inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-5 py-2 rounded-lg shadow"
