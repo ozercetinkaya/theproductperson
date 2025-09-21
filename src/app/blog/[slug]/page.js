@@ -12,6 +12,7 @@ export default BlogDetail;
 */
 
 // app/blog/[slug]/page.jsx
+export const runtime = "edge";
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getMediaUrl } from "@/utils";
