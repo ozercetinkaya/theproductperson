@@ -2,7 +2,7 @@
 // app/blog/[slug]/page.jsx
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
-import { getMediaUrl } from "@/utils";
+// import { getMediaUrl } from "@/utils";
 import url from "../../../../constants";
 
 const STRAPI_URL = url || "http://localhost:1337";
@@ -17,9 +17,7 @@ function normalize(row) {
   const coverV4 = row.attributes?.cover?.data?.attributes;
   const cover = coverV5 || coverV4 || null;
 
-  const coverSrc = cover
-    ? getMediaUrl(cover.formats?.large?.url || cover.url)
-    : "https://placehold.co/1280x720?text=No%20Image";
+  const coverSrc = "https://placehold.co/1280x720?text=No%20Image";
 
   return { title, body, cover, coverSrc };
 }
