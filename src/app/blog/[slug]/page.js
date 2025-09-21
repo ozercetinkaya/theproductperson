@@ -51,6 +51,7 @@ async function fetchOne(param) {
 }
 
 export default async function BlogDetail({ params }) {
+  return <div>BlogDetail</div>;
   const slug = params?.slug;
   const data = await fetchOne(slug);
 
