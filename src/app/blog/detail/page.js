@@ -16,7 +16,7 @@ export default async function BlogDetail({ params }) {
     console.error("Fetch failed for blogs:", res.status, res.statusText);
   }
   const json = await res.json();
-  const blogs = json?.data || [];
+  const blogs = json?.data?.[0];
   if (!blogs) {
     // Veri bulunamazsa 404 sayfasına yönlendir
     // Next.js sunucu bileşenlerinde redirect kullanırken Next.js'in 'next/navigation' modülünden 'notFound' kullanılması tavsiye edilir.
