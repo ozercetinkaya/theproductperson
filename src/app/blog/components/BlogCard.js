@@ -55,7 +55,7 @@ import Link from "next/link";
 export default function BlogCard({ item }) {
   return (
     <Link
-      href={`/blog/${item.slug}`}
+      href={`/blog/detail?name=${item.slug}`}
       className="min-w-[420px] max-w-md h-[400px] bg-white shadow-md rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
     >
       <div className="flex items-center justify-center overflow-hidden max-h-[200px] rounded-xl mb-2">
