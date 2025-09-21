@@ -3,7 +3,7 @@ import React from "react";
 import Image from "next/image";
 
 export default async function BlogDetail({ params }) {
-  const slug = params?.slug;
+  const slug = params?.name;
 
   const STRAPI_URL =
     process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
@@ -18,9 +18,6 @@ export default async function BlogDetail({ params }) {
   }
   const json = await res.json();
   const blogs = json?.data || [];
-  if (blogs.length === 0) {
-    return <div>Blog not found</div>;
-  }
   if (!blogs) {
     // Veri bulunamazsa 404 sayfasına yönlendir
     // Next.js sunucu bileşenlerinde redirect kullanırken Next.js'in 'next/navigation' modülünden 'notFound' kullanılması tavsiye edilir.
