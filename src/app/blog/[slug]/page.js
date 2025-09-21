@@ -45,10 +45,12 @@ async function fetchOne(param) {
   const urlStr = `${base}?filters[slug][$eq]=${encodeURIComponent(
     param
   )}&populate=cover`;
+  console.log(urlStr);
   const res = await fetch(urlStr);
   if (!res.ok) throw new Error(`Fetch failed ${res.status}`);
   const json = await res.json();
   const row = json.data?.[0];
+  console.log(row);
   if (row) return normalize(row);
 
   // yoksa id
