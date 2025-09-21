@@ -20,8 +20,8 @@ export default async function BlogDetail({ params }) {
   return (
     <div>
       <h1>BlogDetail</h1>
-      <p>{blogs[0].title}</p>
-      <p>{blogs[0].description}</p>
+      {/* <p>{blogs[0].title}</p>
+      <p>{blogs[0].description}</p> */}
     </div>
   );
 }
