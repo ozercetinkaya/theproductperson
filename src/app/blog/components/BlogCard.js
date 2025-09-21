@@ -48,7 +48,7 @@ import Link from "next/link"; */
     </Link>
   );
 }*/
-import { getMediaUrl } from "@/utils";
+// import { getMediaUrl } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 
