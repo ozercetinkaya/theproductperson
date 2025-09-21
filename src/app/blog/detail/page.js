@@ -10,7 +10,9 @@ export default async function BlogDetail({ params }) {
     "https://theproductpersonbackend-production.up.railway.app" ||
     "http://localhost:1337";
   const CT = "articles";
-  const res = await fetch(STRAPI_URL + CT + "?populate=cover");
+  const res = await fetch(
+    STRAPI_URL + CT + "?name=" + slug + "?populate=cover"
+  );
   if (!res.ok) {
     console.error("Fetch failed for blogs:", res.status, res.statusText);
   }
