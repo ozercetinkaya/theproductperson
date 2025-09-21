@@ -8,7 +8,7 @@ export default async function BlogPage() {
   const res = await fetch(url + page + "?populate=cover");
   const json = await res.json();
   const blogs = json.data;
-
+  console.log(url + page + "?populate=cover");
   /* TODOS:
     1.Buraya kart tasarımı yapılacak.
     2. Server'dan gelen arrayı kart ile döndür.
