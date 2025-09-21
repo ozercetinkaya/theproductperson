@@ -16,8 +16,7 @@ import React from "react";
 import Image from "next/image";
 import { getMediaUrl } from "@/utils";
 
-export default async function BlogDetail({ params, searchParams }) {
-  const slug = searchParams?.name || params?.name;
+export default async function BlogDetail() {
   const STRAPI_URL =
     process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
   const CT = "articles";
@@ -39,10 +38,11 @@ export default async function BlogDetail({ params, searchParams }) {
   }
 
   async function fetchOne(param) {
+    const slug = new URLSearchParams(param).get("name");
     const base = `${STRAPI_URL}/${CT}`;
     // önce slug
     const urlStr = `${base}?filters[slug][$eq]=${encodeURIComponent(
-      param
+      slug
     )}&populate=cover`;
     console.log(urlStr);
     const res = await fetch(urlStr);
