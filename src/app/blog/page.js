@@ -1,9 +1,19 @@
 import BlogCard from "./components/BlogCard";
-import { fetchBlogs } from "./actions";
 export const runtime = "edge";
 
+const STRAPI_URL =
+  process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
+  "https://theproductpersonbackend-production.up.railway.app" ||
+  "http://localhost:1337";
+const CT = "/articles";
+
 export default async function BlogPage() {
-  const blogs = await fetchBlogs();
+  const res = await fetch(STRAPI_URL + CT + "?populate=cover");
+  if (!res.ok) {
+    console.error("Fetch failed for blogs:", res.status, res.statusText);
+  }
+  const json = await res.json();
+  const blogs = json?.data || [];
 
   /* TODOS:
     1.Buraya kart tasarımı yapılacak.
