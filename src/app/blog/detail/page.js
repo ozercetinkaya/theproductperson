@@ -1,16 +1,17 @@
 // app/blog/[slug]/page.jsx
 import React from "react";
 
-export default async function BlogDetail({ params }) {
-  const slug = params?.name;
+export default async function BlogDetail({ params, searchParams }) {
+  const slug = searchParams?.name || params?.name;
 
   const STRAPI_URL =
     process.env.NEXT_PUBLIC_STRAPI_URL_LIVE ||
     "https://theproductpersonbackend-production.up.railway.app" ||
     "http://localhost:1337";
   const CT = "/articles";
+  const querySlug = encodeURIComponent(slug || "");
   const res = await fetch(
-    STRAPI_URL + CT + "?filters[slug][$eq]=1" + "&populate=cover"
+    STRAPI_URL + CT + `?filters[slug][$eq]=${querySlug}` + "&populate=cover"
   );
   if (!res.ok) {
     console.error("Fetch failed for blogs:", res.status, res.statusText);
