@@ -1,53 +1,13 @@
-/*import { getMediaUrl } from "@/utils";
+/*
+import getMediaUrl from "@/utils";
 import Image from "next/image";
-import Link from "next/link"; */
+import Link from "next/link";
 
-/* export default function BlogCard({ item }) {
-  return (
-    <Link
-      // Burası dinamik hale getirelecek "{}""
-      href="/blog/1"
-      className="min-w-[420px] max-w-md h-[400px] bg-white shadow-md rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
-    >
-      <div
-        className="rounded-xl mb-2"
-        // TODO: aşağıdaki property'ler tailwind'de className'e çevirelecek
-        style={{
-          maxHeight: "200px",
-          overflow: "hidden",
-          justifyContent: "center",
-          alignItems: "center",
-          display: "flex",
-        }}
-      >
-        {item?.cover?.url ? (
-          <Image
-            alt="mainimage"
-            src={getMediaUrl(item.cover.url)}
-            width={200} // oran hesabı için
-            height={120}
-            style={{ width: "100%", height: "auto" }} // dinamik genişlik
-          />
-        ) : (
-          <Image
-            src={"https://placehold.co/600x400?text=No%20Image"}
-            alt="placeholder"
-            width={200} // oran hesabı için
-            height={120}
-            className="rounded-xl mb-2"
-            style={{ width: "100%", height: "auto" }} // dinamik genişlik
-            unoptimized
-          />
-        )}
-      </div>
-      */ {
-  /* <Image src={item.cover} /> */
-}
-/*<h1 className="text-xl font-bold mb-2">{item.title}</h1>
-      <h2 className="text-gray-600 mb-2">{item.description}</h2>
-    </Link>
-  );
-}*/
+// Example card component:
+// - make the link dynamic
+// - center the image within a fixed area
+// - use Tailwind utilities instead of inline styles where possible
+*/
 import getMediaUrl from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -56,31 +16,42 @@ export default function BlogCard({ item }) {
   return (
     <Link
       href={`/blog/detail?name=${item.slug}`}
-      className="min-w-[420px] max-w-md h-[400px] bg-white shadow-md rounded-2xl p-6 hover:shadow-lg transition-shadow duration-300 overflow-hidden"
+      className="group block bg-white rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-200 overflow-hidden"
     >
-      <div className="flex items-center justify-center overflow-hidden max-h-[200px] rounded-xl mb-2">
+      <div className="h-[200px] bg-gray-50 flex items-center justify-center overflow-hidden rounded-t-2xl">
         {item?.cover?.url ? (
           <Image
-            alt="mainimage"
+            alt={item.title || "cover"}
             src={getMediaUrl(item.cover.url)}
-            width={200}
-            height={120}
-            className="w-full h-auto"
+            width={600}
+            height={400}
+            className="w-full h-full object-cover"
           />
         ) : (
-          <Image
-            src="https://placeon.site/600/400/png/6b7280?text=600x400&font=opensans&fontSize=24"
-            alt="placeholder"
-            width={200}
-            height={120}
-            className="w-full h-auto"
-            unoptimized
-          />
+          <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
+            <span className="text-lg">No image</span>
+          </div>
         )}
       </div>
 
-      <h1 className="text-xl font-bold mb-2">{item.title}</h1>
-      <h2 className="text-gray-600 mb-2 mt-4">{item.description}</h2>
+      <div className="p-6">
+        <h3 className="text-lg font-semibold text-gray-900 line-clamp-2">
+          {item.title}
+        </h3>
+        <p className="mt-3 text-sm text-gray-600 line-clamp-3">
+          {item.description}
+        </p>
+        <div className="mt-6 flex items-center justify-between">
+          <span className="text-sm text-indigo-600 font-medium">
+            Read more →
+          </span>
+          <span className="text-xs text-gray-400">
+            {item.publishedAt
+              ? new Date(item.publishedAt).toLocaleDateString()
+              : ""}
+          </span>
+        </div>
+      </div>
     </Link>
   );
 }

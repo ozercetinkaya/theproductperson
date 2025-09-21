@@ -16,7 +16,7 @@ export default BlogDetail;
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { getMediaUrl } from "@/utils";
+import getMediaUrl from "@/utils";
 
 export default function BlogDetailClient() {
   const STRAPI_URL =
@@ -84,7 +84,7 @@ export default function BlogDetailClient() {
     })();
 
     if (!param) {
-      setError("Geçersiz slug veya id");
+      setError("Invalid slug or id");
       setLoading(false);
       return;
     }
@@ -92,7 +92,7 @@ export default function BlogDetailClient() {
     fetchBySlugOrId(param)
       .then((d) => {
         if (!mounted) return;
-        if (!d) setError("İstenilen blog bulunamadı.");
+        if (!d) setError("Requested blog not found.");
         setData(d);
       })
       .catch((err) => {
@@ -111,10 +111,18 @@ export default function BlogDetailClient() {
 
   if (loading)
     return (
-      <main className="bg-white">
+      <main className="bg-white pt-3 pb-10">
         <section className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="mt-6 h-24 flex items-center justify-center">
-            Yükleniyor...
+          <div className="mt-8">
+            <div className="p-6 sm:p-8 animate-pulse">
+              <div className="rounded-xl bg-gray-100 w-full h-56 sm:h-64 md:h-72" />
+              <div className="mt-6 h-8 w-3/4 bg-gray-200 rounded-md" />
+              <div className="mt-4 space-y-3">
+                <div className="h-4 bg-gray-200 rounded-md w-full" />
+                <div className="h-4 bg-gray-200 rounded-md w-5/6" />
+                <div className="h-4 bg-gray-200 rounded-md w-4/6" />
+              </div>
+            </div>
           </div>
         </section>
       </main>
@@ -124,8 +132,43 @@ export default function BlogDetailClient() {
     return (
       <main className="bg-white">
         <section className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="mt-6 h-24 flex items-center justify-center">
-            {error}
+          <div className="mt-12 flex flex-col items-center text-center">
+            <div className="flex items-center justify-center w-20 h-20 rounded-full bg-red-50">
+              <svg
+                className="w-10 h-10 text-red-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h2 className="mt-6 text-xl font-semibold text-gray-900">
+              Something went wrong
+            </h2>
+            <p className="mt-2 text-sm text-gray-600">{error}</p>
+            <div className="mt-6 flex items-center gap-3">
+              <button
+                onClick={() => {
+                  setLoading(true);
+                  setError(null);
+                  // tetikle: aynı effect yeniden çağrılmayacağı için reload kullanıyoruz
+                  window.location.reload();
+                }}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                Retry
+              </button>
+              <a href="/blog" className="text-sm text-gray-600 hover:underline">
+                Back to all blogs
+              </a>
+            </div>
           </div>
         </section>
       </main>
@@ -139,44 +182,54 @@ export default function BlogDetailClient() {
   return (
     <main className="bg-white">
       <section className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="relative mt-6 h-56 sm:h-64 md:h-72 rounded-2xl overflow-hidden mx-auto">
-          <Image
-            src={data.coverSrc}
-            alt={data.title}
-            fill
-            className="object-cover"
-            sizes="(max-width: 640px) 100vw, 768px"
-            priority
-            unoptimized={!data.cover}
-          />
-        </div>
-      </section>
+        <nav className="mt-6" aria-label="breadcrumb">
+          <a href="/blog" className="text-sm text-indigo-600 hover:underline">
+            ← All blogs
+          </a>
+        </nav>
 
-      <section className="mx-auto max-w-3xl px-4 sm:px-6">
-        <h1 className="mt-6 text-3xl sm:text-4xl font-bold tracking-tight text-gray-900">
-          {data.title}
-        </h1>
-      </section>
+        <article className="mt-6">
+          <header>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900">
+              {data.title}
+            </h1>
+          </header>
 
-      <article className="mx-auto max-w-3xl px-4 sm:px-6">
-        {looksHtml ? (
-          <div
-            className="prose prose-lg max-w-none mt-6 text-justify prose-p:text-justify prose-p:indent-8 prose-headings:text-left [hyphens:auto]"
-            dangerouslySetInnerHTML={{ __html: data.body }}
-          />
-        ) : (
-          <div className="mt-6 text-lg text-gray-800 space-y-6">
-            {paragraphs.map((p, i) => (
-              <p
-                key={i}
-                className="leading-8 indent-8 text-justify [hyphens:auto]"
-              >
-                {p}
-              </p>
-            ))}
+          <figure className="mt-6 rounded-2xl overflow-hidden bg-gray-100">
+            {data.coverSrc ? (
+              <Image
+                src={data.coverSrc}
+                alt={data.title}
+                width={1280}
+                height={720}
+                className="w-full h-64 sm:h-80 md:h-96 object-cover"
+                sizes="(max-width: 640px) 100vw, 768px"
+                priority
+                unoptimized={!data.cover}
+              />
+            ) : (
+              <div className="w-full h-64 sm:h-80 md:h-96 flex items-center justify-center text-gray-400">
+                No image
+              </div>
+            )}
+            {data.cover?.caption && (
+              <figcaption className="sr-only">{data.cover.caption}</figcaption>
+            )}
+          </figure>
+
+          <div className="mt-8 prose prose-lg max-w-none text-gray-800">
+            {looksHtml ? (
+              <div dangerouslySetInnerHTML={{ __html: data.body }} />
+            ) : (
+              paragraphs.map((p, i) => (
+                <p key={i} className="leading-8 first:mt-0">
+                  {p}
+                </p>
+              ))
+            )}
           </div>
-        )}
-      </article>
+        </article>
+      </section>
     </main>
   );
 }
