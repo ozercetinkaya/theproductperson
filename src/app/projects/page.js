@@ -1,38 +1,42 @@
-import Image from "next/image";
-import Link from "next/link";
+import ProjectCard from "@/components/ProjectCard";
+import projectsData from "@/data/projects.json";
 
 export default function ProjectsPage() {
-  return (
-    <section className="min-h-[80vh] flex flex-col justify-between bg-[#F8F5F2] text-center py-10 px-4">
-      <div className="max-w-5xl mx-auto">
-        {/* Illustration */}
-        <div className="relative w-full h-[200px] sm:h-[280px] md:h-[340px] -mt-6">
-          <Image
-            src="/illustration-under-construction-projects.svg"
-            alt="Under Construction"
-            fill
-            className="object-contain"
-            priority
-          />
-        </div>
+  const projects = Array.isArray(projectsData?.data) ? projectsData.data : [];
 
-        {/* Text + Button */}
-        <div className="mt-4">
-          <h2 className="text-3xl sm:text-4xl font-bold text-[#332E2E]">
-            Projects section is under construction!
-          </h2>
-          <p className="mt-2 text-[#555] text-lg">
-            I'm currently preparing a selection of projects that highlight my skills in frontend development, SQL, and design.
-            You'll soon find examples of my work along with links to companies I've collaborated with in the past. Stay tuned—more updates are on the way!
+  return (
+    <main className="min-h-[80vh] bg-[#F8F5F2] py-16">
+      <section className="mx-auto flex max-w-6xl flex-col gap-12 px-4 sm:px-6 lg:px-8">
+        <header className="text-center lg:text-left">
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-[#0095AF]">
+            Selected Work
           </p>
-          <Link
-            href="/"
-            className="inline-block mt-6 bg-[#0095AF] hover:bg-[#007A91] text-white font-semibold py-3 px-8 rounded-2xl shadow transition"
-          >
-            Return Home
-          </Link>
-        </div>
-      </div>
-    </section>
+          <h1 className="mt-3 text-4xl font-extrabold text-[#332E2E] sm:text-5xl">
+            Projects that blend product thinking and crafted execution
+          </h1>
+          <p className="mt-4 max-w-3xl text-lg text-[#555]">
+            A snapshot of initiatives where I shaped the vision, coordinated the
+            roadmap, and partnered with cross-functional teams to launch
+            measurable outcomes.
+          </p>
+        </header>
+
+        {projects.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {projects.map((item, idx) => {
+              const key =
+                item?.id ?? item?.attributes?.slug ?? `project-${idx}`;
+              return <ProjectCard key={key} item={item} />;
+            })}
+          </div>
+        ) : (
+          <div className="rounded-3xl border border-dashed border-[#d1c5b6] bg-white/40 p-12 text-center">
+            <h2 className="text-2xl font-semibold text-[#332E2E]">
+              Projects data not found
+            </h2>
+          </div>
+        )}
+      </section>
+    </main>
   );
 }

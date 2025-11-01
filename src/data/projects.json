@@ -1,0 +1,75 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "attributes": {
+        "slug": "today-i-learned",
+        "title": "Today I Learned",
+        "description": "An interactive dashboard that shares new knowledge from different topics.",
+        "role": "Product Manager - Developer (SQL, React, Figma)",
+        "period": "2024",
+        "tags": [
+          "Product Management",
+          "UX/UI",
+          "React",
+          "Figma",
+          "SQL",
+          "Supabase",
+          "Railway"
+        ],
+        "highlights": [
+          {
+            "id": 1,
+            "bullet": "Designed and developed an interactive dashboard enabling users to share and explore daily facts across multiple topics using React and Supabase."
+          },
+          {
+            "id": 2,
+            "bullet": "Built and deployed the full stack application on Railway, managing database design, authentication, and real-time data updates with SQL."
+          },
+          {
+            "id": 3,
+            "bullet": "Led the end-to-end product lifecycle—from user research and wireframing in Figma to frontend implementation and release—as a solo Product Manager & Developer."
+          }
+        ],
+        "links": [
+          {
+            "id": 1,
+            "label": "GitHub",
+            "url": "https://github.com/ozercetinkaya/today-i-learned"
+          },
+          {
+            "id": 2,
+            "label": "Prototype",
+            "url": "https://todaywhatilearned.netlify.app/"
+          }
+        ],
+        "thumbnail": {
+          "data": {
+            "id": 11,
+            "attributes": {
+              "name": "portfolio-dashboard.png",
+              "url": "/uploads/portfolio-dashboard.png",
+              "mime": "image/png",
+              "width": 1600,
+              "height": 1200,
+              "size": 452.7,
+              "createdAt": "2023-09-01T09:00:00.000Z",
+              "updatedAt": "2023-09-01T09:00:00.000Z"
+            }
+          }
+        },
+        "createdAt": "2023-09-01T09:00:00.000Z",
+        "updatedAt": "2023-10-15T15:30:00.000Z",
+        "publishedAt": "2023-10-20T10:00:00.000Z"
+      }
+    }
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 25,
+      "pageCount": 1,
+      "total": 3
+    }
+  }
+}

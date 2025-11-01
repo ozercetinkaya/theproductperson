@@ -1,11 +1,9 @@
 "use client";
-import BlogCard from "./components/BlogCard";
+import url from "../../../constants";
+import BlogCard from "../../components/BlogCard";
 
 import { useEffect, useState } from "react";
-const STRAPI_URL =
-  process.env.NEXT_PUBLIC_STRAPI_API_URL ||
-  "https://theproductpersonbackend-production.up.railway.app/api" ||
-  "http://localhost:1337";
+const STRAPI_URL = url;
 const CT = "/articles";
 
 export default function BlogPage() {

@@ -17,10 +17,10 @@ export default BlogDetail;
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import getMediaUrl from "@/utils";
+import url from "../../../../constants";
 
 export default function BlogDetailClient() {
-  const STRAPI_URL =
-    process.env.NEXT_PUBLIC_STRAPI_API_URL || "http://localhost:1337";
+  const STRAPI_URL = url;
   const CT = "articles";
 
   function normalize(row) {
