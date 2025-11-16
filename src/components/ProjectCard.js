@@ -7,12 +7,8 @@ export default function ProjectCard({ item }) {
   const tags = Array.isArray(attrs.tags) ? attrs.tags : [];
   const highlights = Array.isArray(attrs.highlights) ? attrs.highlights : [];
   const links = Array.isArray(attrs.links) ? attrs.links : [];
-
-  const thumbAttributes = attrs.thumbnail?.data?.attributes;
-  const thumbnailUrl = thumbAttributes?.url
-    ? getMediaUrl(thumbAttributes.url)
-    : null;
-
+  const thumbnailUrl = getMediaUrl(attrs.thumbnail?.url);
+  const thumbAttributes = attrs.thumbnail?.attributes;
   return (
     <article className="group flex flex-col overflow-hidden rounded-3xl border border-[#e5ded6] bg-white shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
       <div className="relative h-48 bg-[#F8F5F2]">
@@ -35,7 +31,7 @@ export default function ProjectCard({ item }) {
       <div className="flex flex-1 flex-col p-6">
         <header className="flex flex-col gap-1">
           <p className="text-sm font-medium text-[#0095AF]">
-            {attrs.period || "TBD"}
+            {new Date(attrs.period).getFullYear() || attrs.period || "TBD"}
           </p>
           <h3 className="text-xl font-semibold text-[#332E2E] leading-tight">
             {attrs.title || "Unnamed project"}
@@ -91,8 +87,7 @@ export default function ProjectCard({ item }) {
             {links.map((link) => {
               const label =
                 typeof link === "string" ? link : link?.label || "View";
-              const href =
-                typeof link === "string" ? link : link?.url || "#";
+              const href = typeof link === "string" ? link : link?.url || "#";
               const linkId =
                 typeof link === "object" && link?.id ? link.id : href;
               return (

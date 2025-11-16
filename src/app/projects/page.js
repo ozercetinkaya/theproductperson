@@ -1,8 +1,40 @@
+"use client";
 import ProjectCard from "@/components/ProjectCard";
 import projectsData from "@/data/projects.json";
+import url from "../../../constants";
+import { useEffect, useState } from "react";
 
+const STRAPI_URL = url;
+const CT = "/projects";
 export default function ProjectsPage() {
-  const projects = Array.isArray(projectsData?.data) ? projectsData.data : [];
+  // const projects = Array.isArray(projectsData?.data) ? projectsData.data : [];
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    let mounted = true;
+    const fetchProjects = async () => {
+      try {
+        const res = await fetch(STRAPI_URL + CT + "?populate=thumbnail");
+        if (!res.ok) {
+          throw new Error(`${res.status} ${res.statusText}`);
+        }
+        const json = await res.json();
+        console.log(json);
+        if (mounted) setProjects(json?.data || []);
+      } catch (err) {
+        console.error("Fetch failed for projects:", err);
+        if (mounted) setError(err);
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    fetchProjects();
+    return () => {
+      mounted = false;
+    };
+  }, []);
 
   return (
     <main className="min-h-[80vh] bg-[#F8F5F2] py-16">
